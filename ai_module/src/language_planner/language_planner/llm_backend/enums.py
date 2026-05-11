@@ -21,5 +21,6 @@ class LanguageModel(Enum):
     CLAUDE = "claude"
     LLAMA = "llama3.1"
     R1_QWEN2 = "deepseek-r1:7b"
+    QWEN36 = "qwen3.6:27b"
     GPT4O = "gpt-4o"
     GPT4O_MINI = "gpt-4o-mini"

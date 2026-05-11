@@ -65,7 +65,7 @@ class LanguagePlanner(Node):
         self.object_marker_pub = self.create_publisher(Marker, '/selected_object_marker', 5)
 
         self.pose_sub = self.create_subscription(Odometry, '/state_estimation', self.handle_pose, 1, callback_group=MutuallyExclusiveCallbackGroup())
-        self.map_sub = self.create_subscription(PointCloud2, '/explored_areas', self.handle_map, 1, callback_group=MutuallyExclusiveCallbackGroup())
+        self.map_sub = self.create_subscription(PointCloud2, '/overall_map', self.handle_map, 1, callback_group=MutuallyExclusiveCallbackGroup())
         self.freespace_sub = self.create_subscription(PointCloud2, '/traversable_area', self.handle_freespace, 1, callback_group=MutuallyExclusiveCallbackGroup())
 
         self.caption_sub = self.create_subscription(String, '/queried_captions', self.handle_captions, 1, callback_group=MutuallyExclusiveCallbackGroup())
@@ -199,7 +199,7 @@ class LanguagePlanner(Node):
                     marker.header.frame_id = "map" 
                     seconds, nanoseconds = self.get_clock().now().seconds_nanoseconds()
                     marker.header.stamp = Time(seconds=seconds, nanoseconds=nanoseconds).to_msg()
-                    marker.id = idx
+                    marker.id = int(idx)
                     marker.ns = ns
                     marker.type = Marker.CUBE
                     marker.action = Marker.DELETE
@@ -266,6 +266,9 @@ class LanguagePlanner(Node):
         if self.freespace_pcl is None:
             self.log_info("No freespace map received")
             return
+        if self.map_pcl is None:
+            self.log_info("No explored map received - drive the robot around first")
+            return
 
         input_statement = msg.data
 
@@ -301,14 +304,20 @@ class LanguagePlanner(Node):
             
         self.log_info(f'{object_dict}')
 
-        self.target_waypoints, self.target_ids, filtered_objects_out, output_code = self.language_planner_backend.generate_plan(
-            self.environment_name,
-            input_statement,
-            self.map_pcl,
-            self.freespace_pcl,
-            object_dict,
-            self.cur_pos
-        )
+        try:
+            self.target_waypoints, self.target_ids, filtered_objects_out, output_code = self.language_planner_backend.generate_plan(
+                self.environment_name,
+                input_statement,
+                self.map_pcl,
+                self.freespace_pcl,
+                object_dict,
+                self.cur_pos
+            )
+        except Exception as e:
+            import traceback
+            self.log_info(f"generate_plan failed: {e}")
+            self.log_info(traceback.format_exc())
+            return
 
         self.log_info(output_code)
         self.log_llm_output(input_statement, output_code)

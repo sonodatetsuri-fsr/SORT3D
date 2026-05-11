@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export MISTRAL_API_KEY="YOUR API KEY HERE"
+export OLLAMA_BASE_URL="${OLLAMA_BASE_URL:-http://localhost:11434}"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source /opt/ros/humble/setup.bash
 
@@ -13,7 +13,7 @@ cd ../simulator/wheelchair_unity
 ros2 launch language_planner vehicle_simulator_semantic_mapping_launch.xml &
 sleep 5
 
-ros2 run language_planner language_planner_node --platform wheelchair &
+ros2 run language_planner language_planner_node --platform wheelchair --model qwen3.6:35b &
 sleep 5
 
 cd $SCRIPT_DIR/../semantic_mapper

@@ -441,7 +441,7 @@ class LanguagePlannerBenchmark:
         environment_name = scene_dict['regions'][0]['name']
         cur_pos = self.cur_pos
 
-        #self.captioner_backend.semantic_dict = semantic_dict
+        self.captioner_backend.semantic_dict = semantic_dict
         sleep(2)
         # retrieve relevant objects
         object_dict = self.query_objects(obj_query_list, semantic_dict)

@@ -62,7 +62,9 @@ class CaptioningNode(Node):
 
         self.asset_list = pd.read_csv(str(self.scene_path / 'environment' /'AssetList.csv'))
         self.categories = pd.read_csv(str(self.scene_path / 'environment' / 'Categories.csv'))
-        self.dimensions = pd.read_csv(str(self.scene_path / 'environment' / 'Dimensions.csv'))
+        self.dimensions = pd.read_csv(str(self.scene_path / 'environment' / 'Dimensions.csv'), na_values=['_'])
+        for col in ['min_x', 'max_x', 'min_y', 'max_y', 'min_z', 'max_z']:
+            self.dimensions[col] = pd.to_numeric(self.dimensions[col], errors='coerce')
         self.asset_list = self.asset_list[self.asset_list['name'].isin(self.categories['name'])].reset_index()
 
 
@@ -72,11 +74,13 @@ class CaptioningNode(Node):
 
         semantic_dict = {}
         for i, id in enumerate(self.semantic_ids):
-            
+
             centroid: np.ndarray = self.asset_list.loc[i, ['px', 'py', 'pz']].to_numpy()
 
             bounds = self.dimensions.loc[self.dimensions['name'] == self.asset_list.loc[i, 'name'], ['min_x', 'max_x', 'min_y', 'max_y', 'min_z', 'max_z']].squeeze().tolist()
-            bounds = np.array(bounds)
+            bounds = np.array(bounds, dtype=float)
+            if not np.all(np.isfinite(bounds)):
+                continue
             dimensions: np.ndarray = bounds[[1, 3, 5]] - bounds[[0, 2, 4]]
 
             centroid[2] += dimensions[2] / 2

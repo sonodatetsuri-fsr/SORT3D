@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export MISTRAL_API_KEY="YOUR API KEY HERE"
+export OLLAMA_BASE_URL="${OLLAMA_BASE_URL:-http://localhost:11434}"
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source /opt/ros/humble/setup.bash
 
@@ -15,4 +16,4 @@ sleep 5
 
 cd $SCRIPT_DIR
 cd ../ai_module
-ros2 launch language_planner sort3d_gt_semantics_launch.xml
+ros2 launch language_planner stream4d_gt_semantics_launch.xml ll_model:=qwen3.6:27b captioner_batch_size:=4 object_query_type:=clip

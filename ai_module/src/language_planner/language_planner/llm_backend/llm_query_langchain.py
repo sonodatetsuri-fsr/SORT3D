@@ -81,7 +81,7 @@ class LLMQueryHandler:
                 rate_limiter = self.rate_limiter,
                 max_retries=10
             )
-        elif model == LanguageModel.LLAMA or model == LanguageModel.R1_QWEN2:
+        elif model == LanguageModel.LLAMA or model == LanguageModel.R1_QWEN2 or model == LanguageModel.QWEN36:
             # install ollama here: https://github.com/ollama/ollama
             # Run in a separate terminal as `ollama run llama3.1:8b` or `ollama run deepseek-r1:7b`
             from langchain_ollama import ChatOllama
@@ -89,6 +89,8 @@ class LLMQueryHandler:
                 model=model.value,
                 temperature=0.0,
                 num_predict=5096,
+                num_ctx=16384,
+                keep_alive=300,
                 **kwargs
             )
         elif model == LanguageModel.GPT4O:
@@ -208,6 +210,9 @@ class LLMQueryHandler:
                 else:
                     prompt = get_tool_caption_benchmark_prompt(environment_name, grid_map_shape, robot_coords, objects, tool_descriptions)
 
+                if self.model == LanguageModel.QWEN36:
+                    prompt += "\n/no_think"
+
                 
         if self.run_mode in [NavQueryRunMode.DEFAULT, NavQueryRunMode.USE_TOOL_NOT_GRAPH]:
             try:
@@ -317,42 +322,42 @@ class LLMQueryHandler:
         prompt_suffix = f'''Targets={query_list} \n Scene objects={prompt_obj_dict} \n Output:\n
         '''
         prompt += prompt_suffix
-        client = Mistral(api_key=os.environ["MISTRAL_API_KEY"])
+
+        if self.model == LanguageModel.QWEN36:
+            prompt += "\n/no_think"
+
         tries = 3
+        response = None
         while tries > 0:
             try:
-                chat_response = client.chat.complete(
-                    model = "mistral-large-latest",
-                    messages = [
-                        {
-                            "role": "system",
-                            "content": prompt,
-                        },
-                        {
-                            "role": "user",
-                            "content": prompt_suffix,
-                        }
-                    ]
-                )
-                tries = 0
-                print("model output", chat_response)
+                messages = [
+                    SystemMessage(content=prompt),
+                    HumanMessage(content=prompt_suffix),
+                ]
+                ai_message = self.llm.invoke(messages)
+                response = ai_message.content
+                print("model output", response)
+                break
             except Exception as e:
-                print("Retrying")
+                print(f"Retrying: {e}")
                 tries -= 1
                 sleep(2)
-        
-        response = chat_response.choices[0].message.content
+
+        if response is None:
+            print("filter_objects: all retries failed")
+            return []
+
         try:
             return eval(response)
         except Exception as e:
             pprint(response)
-            print("Mistral response is not evaluable!")
+            print("LLM response is not evaluable!")
             start = '['
             end=']'
             re_parsed = response[response.rfind(start)+len(start):response.rfind(end)]
             if re_parsed is not None:
                 re_parsed = '[' + re_parsed + ']'
-            try: 
+            try:
                 print("parsed str", re_parsed)
                 return eval(re_parsed)
             except Exception as e:

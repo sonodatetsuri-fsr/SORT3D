@@ -553,10 +553,14 @@ class Captioner:
             ordered_results.sort(key=lambda x: max(x[1]), reverse=True)
 
             # Thresholding
+            thresholded = False
             for i, score in enumerate([max(q[1]) for q in ordered_results]):
                 if score < self.clip_threshold:
                     full_ordered_results.append(ordered_results[:i])
+                    thresholded = True
                     break
+            if not thresholded:
+                full_ordered_results.append(ordered_results)
 
         return_dict = {
             "query": query_list,

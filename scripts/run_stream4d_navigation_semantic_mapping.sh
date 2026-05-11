@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export MISTRAL_API_KEY="YOUR API KEY HERE"
+export OLLAMA_BASE_URL="${OLLAMA_BASE_URL:-http://localhost:11434}"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source /opt/ros/humble/setup.bash
 export ROS_DOMAIN_ID=1
@@ -8,7 +8,7 @@ export ROS_DOMAIN_ID=1
 cd $SCRIPT_DIR
 cd ../ai_module
 source ./install/setup.bash
-ros2 run language_planner language_planner_node --platform wheelchair &
+ros2 run language_planner language_planner_node --platform wheelchair --model qwen3.6:35b &
 sleep 5
 
 cd ../semantic_mapper

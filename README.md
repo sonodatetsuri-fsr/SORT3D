@@ -1,4 +1,4 @@
-<h1 align="center">SORT3D: Spatial Object-centric Reasoning Toolbox for Zero-Shot 3D Grounding Using Large Language Models</h1>
+<h1 align="center">STREAM4D: Spatial Object-centric Reasoning Toolbox for Zero-Shot 3D Grounding Using Large Language Models</h1>
 
 <div align="center" margin-bottom="1em">
 <a href="https://nzantout.github.io">Nader Zantout<sup>✶</sup></a>,
@@ -20,11 +20,11 @@
 </div>
 &nbsp;
 
-We propose **SORT3D**, an LLM-based object-centric grounding and indoor navigation system employing a spatial reasoning toolbox and state-of-the-art 2D VLMs for perception. The toolbox is capable of interpreting both direct and indirect statements about spatial relations, using an LLM for high-level reasoning and guiding the autonomous robot to navigate through the environment. It has demonstrated the best zero-shot performance on spatial reasoning benchmarks. To the best of our knowledge, this is the first implementation of a general spatial relation toolbox for autonomous vision-language navigation that is fully integrated into real-robot systems.
+We propose **STREAM4D**, an LLM-based object-centric grounding and indoor navigation system employing a spatial reasoning toolbox and state-of-the-art 2D VLMs for perception. The toolbox is capable of interpreting both direct and indirect statements about spatial relations, using an LLM for high-level reasoning and guiding the autonomous robot to navigate through the environment. It has demonstrated the best zero-shot performance on spatial reasoning benchmarks. To the best of our knowledge, this is the first implementation of a general spatial relation toolbox for autonomous vision-language navigation that is fully integrated into real-robot systems.
 
 &nbsp;
 
-<div align="center"><img src="media/diagram.png" alt="SORT3D Diagram" width="99%"></div>
+<div align="center"><img src="media/diagram.png" alt="STREAM4D Diagram" width="99%"></div>
 
 &nbsp;
 
@@ -36,8 +36,8 @@ This repository is set up to run both grounding evaluation on the [ReferIt3D](ht
 
 ## Updates
 
-- [2025-06] SORT3D is accepted to IROS 2025!
-- [2025-03] We release SORT3D for offline grounding and online object-centric navigation. 
+- [2025-06] STREAM4D is accepted to IROS 2025!
+- [2025-03] We release STREAM4D for offline grounding and online object-centric navigation. 
 
 -----
 
@@ -46,16 +46,16 @@ This repository is set up to run both grounding evaluation on the [ReferIt3D](ht
 
 - [Repository Structure](#repository-structure)
 - [Data](#data)
-  - [Dataset For SORT3D-Bench](#dataset-for-sort3d-bench)
-  - [ROS Bag Files for SORT3D-Nav](#ros-bag-files-for-sort3d-nav)
+  - [Dataset For STREAM4D-Bench](#dataset-for-stream4d-bench)
+  - [ROS Bag Files for STREAM4D-Nav](#ros-bag-files-for-stream4d-nav)
 - [System Requirements](#system-requirements)
   - [Hardware Requirements](#hardware-requirements)
   - [Operating System](#operating-system)
-- [SORT3D-Bench: Setup](#sort3d-bench-setup)
+- [STREAM4D-Bench: Setup](#stream4d-bench-setup)
   - [1) Conda Environment](#1-conda-environment)
   - [2) Dataset Setup](#2-dataset-setup)
-- [SORT3D-Bench: Usage](#sort3d-bench-usage)
-- [SORT3D-Nav: Setup](#sort3d-nav-setup)
+- [STREAM4D-Bench: Usage](#stream4d-bench-usage)
+- [STREAM4D-Nav: Setup](#stream4d-nav-setup)
   - [0) Cloning Repo and Recommended Installation Method](#0-cloning-repo-and-recommended-installation-method)
   - [1) Docker Installation (Recommended)](#1-docker-installation-recommended)
   - [2) Pulling and Preparing Docker Image](#2-pulling-and-preparing-docker-image)
@@ -64,7 +64,7 @@ This repository is set up to run both grounding evaluation on the [ReferIt3D](ht
   - [3c) Building ROS Humble System with Mecanum Simulator](#3c-building-ros-humble-system-with-mecanum-simulator)
   - [(Optional) Installing ROS Humble System Dependencies Without Docker](#optional-installing-ros-humble-system-dependencies-without-docker)
   - [(Optional) Installing ROS Noetic System Dependencies Without Docker](#optional-installing-ros-noetic-system-dependencies-without-docker)
-- [SORT3D-Nav: Usage](#sort3d-nav-usage)
+- [STREAM4D-Nav: Usage](#stream4d-nav-usage)
   - [Simulation with Ground Truth Semantics](#simulation-with-ground-truth-semantics)
   - [Simulation with Semantic Mapping Module](#simulation-with-semantic-mapping-module)
   - [ROS Bag](#ros-bag)
@@ -73,10 +73,10 @@ This repository is set up to run both grounding evaluation on the [ReferIt3D](ht
 
 ## Repository Structure
 
-SORT3D has two major versions:
+STREAM4D has two major versions:
 
-1. **SORT3D-Bench**: The version of SORT3D used to run the [ReferIt3D](https://referit3d.github.io) and the [IRef-VLA](https://github.com/HaochenZ11/IRef-VLA) benchmarks.
-2. **SORT3D-Nav**: The version of SORT3D used to run navigation on our robot platforms, built on top of our base autonomy stack. SORT3D is deployed on two research platforms:
+1. **STREAM4D-Bench**: The version of STREAM4D used to run the [ReferIt3D](https://referit3d.github.io) and the [IRef-VLA](https://github.com/HaochenZ11/IRef-VLA) benchmarks.
+2. **STREAM4D-Nav**: The version of STREAM4D used to run navigation on our robot platforms, built on top of our base autonomy stack. STREAM4D is deployed on two research platforms:
     1. [Our wheelchair-base robot (**wheelchair**)](https://github.com/jizhang-cmu/cmu_vla_challenge_unity), for which we have both **ROS Noetic** and **ROS Humble** versions.
     2. [Our mecanum-wheeled robot (**mecanum**)](https://github.com/jizhang-cmu/autonomy_stack_mecanum_wheel_platform), for which we have a **ROS Humble** version.    
 &nbsp;
@@ -85,7 +85,7 @@ SORT3D has two major versions:
   <img src="media/wheelchair.jpg" height="300" />
 </p>
 &nbsp;
-This repository contains a separate branch for each platform and each ROS version SORT3D-Nav is deployed on. The SORT3D-Bench script is included in the `humble-wheelchair` branch. Each version of SORT3D-Nav is accompanied with a unity-based simulator and a ROS bag recording of the office areas the live demonstrations were recorded in. Additionally, we provide launch scripts of SORT3D-Nav using both ground truth semantic segmentations and our live semantic mapping module. The table below summarizes the currently available systems and their respective branches:
+This repository contains a separate branch for each platform and each ROS version STREAM4D-Nav is deployed on. The STREAM4D-Bench script is included in the `humble-wheelchair` branch. Each version of STREAM4D-Nav is accompanied with a unity-based simulator and a ROS bag recording of the office areas the live demonstrations were recorded in. Additionally, we provide launch scripts of STREAM4D-Nav using both ground truth semantic segmentations and our live semantic mapping module. The table below summarizes the currently available systems and their respective branches:
 
 | Platform | ROS Version | Branch | Simulation Available | Live Demo Available (Using ROS Bag) | Ground Truth Semantics Available | Semantic Mapping Module Available |
 |---|---|---|---|---|---|---|
@@ -96,9 +96,9 @@ This repository contains a separate branch for each platform and each ROS versio
 
 ## Data
 
-### Dataset For SORT3D-Bench
+### Dataset For STREAM4D-Bench
 
-To run SORT3D-Bench, ensure the following three datasets are downloaded and unzipped:
+To run STREAM4D-Bench, ensure the following three datasets are downloaded and unzipped:
 
 1. **Object Captions Dataset**: For our benchmark, we have pregenerated 2D object crops and captions using our captioning system and [Qwen2.5-VL](#https://github.com/QwenLM/Qwen2.5-VL). To download, first install boto3 and tqdm:
 
@@ -140,7 +140,7 @@ data/<br>
 &nbsp;&nbsp;&nbsp;&nbsp;referit3d/<br>
 
 
-### ROS Bag Files for SORT3D-Nav
+### ROS Bag Files for STREAM4D-Nav
 
 We provide ROS bag files for both the wheelchair and mecanum platforms. To download, install boto3 and tqdm:
 
@@ -154,13 +154,13 @@ Then run
 python data/download_rosbag.py --download_path bagfiles --platform [wheelchair|mecanum]
 ```
 
-while making sure to pick the correct platform. Each ROS bag will be downloaded as a zip file in `bagfiles/`. Unzip the bag files into your directory of choice before replaying them. The wheelchair bag file is currently available, with the mecanum-wheeled robot bag file upcoming with the release of the mecanum version of SORT3D-Nav.
+while making sure to pick the correct platform. Each ROS bag will be downloaded as a zip file in `bagfiles/`. Unzip the bag files into your directory of choice before replaying them. The wheelchair bag file is currently available, with the mecanum-wheeled robot bag file upcoming with the release of the mecanum version of STREAM4D-Nav.
 
 ## System Requirements
 
 ### Hardware Requirements
 
-SORT3D-Nav has been deployed on an Nvidia RTX 4090 with 24GB of VRAM to run the live captioning model on the wheelchair, and on an Nvidia RTX 4090 with 16GB of VRAM to run the live captioning model on the mecanum-wheeled robot. The system requires a minimum of:
+STREAM4D-Nav has been deployed on an Nvidia RTX 4090 with 24GB of VRAM to run the live captioning model on the wheelchair, and on an Nvidia RTX 4090 with 16GB of VRAM to run the live captioning model on the mecanum-wheeled robot. The system requires a minimum of:
 
 - 10GB of VRAM to run the semantic mapping module along with live captioning.
 - 7GB of VRAM to run using ground truth semantics with live captioning.
@@ -169,7 +169,7 @@ If you have more VRAM, you may increase the `captioner_batch_size` in the run sc
 
 The language planner additionally requires a WiFi connection on the robot to connect to the Mistral servers. This system has been tested in Ubuntu 20.04, 22.04, and 24.04, running in the Ubuntu 22.04 Docker image we provide. 
 
-## SORT3D-Bench: Setup
+## STREAM4D-Bench: Setup
 
 ### 1.1) Conda Environment
 
@@ -178,42 +178,42 @@ The language planner additionally requires a WiFi connection on the robot to con
 git checkout humble-wheelchair
 ```
 
-We provide a conda environment containing all the the dependencies required for SORT3D-Bench, which does not require ROS. Create the conda environment like so.
+We provide a conda environment containing all the the dependencies required for STREAM4D-Bench, which does not require ROS. Create the conda environment like so.
 
 ```bash
-conda env create -f environment.yml -n sort3d
+conda env create -f environment.yml -n stream4d
 ```
 
-A `requirements.txt` is also provided mirroring the pip requirements in the `environment.yml`. The Docker image contains all the requirements for SORT3D-Bench preinstalled as well. You may follow sections 1-2 in [Setup: SORT3D-Nav](#setup-sort3d-nav) to install Docker and set the image up.
+A `requirements.txt` is also provided mirroring the pip requirements in the `environment.yml`. The Docker image contains all the requirements for STREAM4D-Bench preinstalled as well. You may follow sections 1-2 in [Setup: STREAM4D-Nav](#setup-stream4d-nav) to install Docker and set the image up.
 
 ### 1.2) Use Docker (Alternatively)
 
 Build the docker: 
 
 ```bash
-docker build --network=host -t sort3d:latest -f docker/Dockerfile_benchmark .
+docker build --network=host -t stream4d:latest -f docker/Dockerfile_benchmark .
 ```
 
 Run the docker: 
 
 ```bash
-docker run --gpus all -it --rm -v [CODE_PATH]:/home/sort3d/SORT3D sort3d:latest
+docker run --gpus all -it --rm -v [CODE_PATH]:/home/stream4d/STREAM4D stream4d:latest
 ```
 
 ### 2) Dataset Setup
 
-Follow the instructions in [Dataset For SORT3D-Bench](#dataset-for-sort3d-bench) to ensure the dataset is correctly set up.
+Follow the instructions in [Dataset For STREAM4D-Bench](#dataset-for-stream4d-bench) to ensure the dataset is correctly set up.
 
-## SORT3D-Bench: Usage
+## STREAM4D-Bench: Usage
 
-SORT3D uses [Mistral Large 2](https://mistral.ai/) by default. Create a free research API key, then set the environment variable `MISTRAL_API_KEY`:
+STREAM4D uses [Mistral Large 2](https://mistral.ai/) by default. Create a free research API key, then set the environment variable `MISTRAL_API_KEY`:
 ```bash
 export MISTRAL_API_KEY="YOUR API KEY HERE"
 ```
 You may then run the benchmark on either Nr3D or Sr3D:
 ```bash
 cd ai_module/src/language_planner/language_planner
-conda activate sort3d # you can skip this if using a docker
+conda activate stream4d # you can skip this if using a docker
 python3 language_planner_benchmark.py --dataset [nr3d|sr3d] --log_dir [LOGFOLDER]
 ```
 Choose `nr3d` or `sr3d` as the `--dataset` argument to run the benchmark on our subsets of Nr3D and Sr3D respectively. The benchmark results are logged in `ai_module/src/language_planner/language_planner/logs/exp###` by default (where ### starts at 000 and is automatically incremented with each run). The script logs all correct answers and LLM reasoning in `correct.json`, and all incorrect answers in `incorrect.json`.
@@ -224,17 +224,17 @@ The script takes a set of optional arguments. The fully supported ones for this 
 |`--exp_name`| Any string | Give the current experiment an optional name. Default is exp###, where ### is an automatically assigned number. |
 |`--model`| `mistral` - `gpt-4o` | Use a different LLM for grounding. Default is Mistral, and we have tested GPT-4o in our paper; other models included in our code may be buggy. For OpenAI, provide the API key in the `OPENAI_API_KEY` environment variable. |
 
-## SORT3D-Nav: Setup
+## STREAM4D-Nav: Setup
 
 ### 0) Cloning Repo and Recommended Installation Method
 
 Begin by cloning the repo with its submodules in your home directory:
 ```bash
 cd ~
-git clone https://github.com/nzantout/SORT3D.git --recursive
+git clone https://github.com/nzantout/STREAM4D.git --recursive
 ```
 
-We provide a CUDA-enabled Ubuntu 22.04 Docker image with both ROS Noetic (built from source) and ROS Humble preinstalled. **This is the recommended way to run SORT3D, as ROS and all dependencies are preinstalled in the docker image.** Follow sections 1 through 3 to install Docker on your computer, pull the image, and download simulation files. The user home directory, `/home/$USER`, is mounted as a volume in the Docker image, allowing access to the repo from the Docker image if the repo has been cloned within the home directory. We provide optional instructions to install the system on a base Ubuntu 22.04 system for both [ROS Humble](#optional-installing-ros-humble-system-dependencies-without-docker) and [ROS Noetic](#optional-installing-ros-noetic-system-dependencies-without-docker).
+We provide a CUDA-enabled Ubuntu 22.04 Docker image with both ROS Noetic (built from source) and ROS Humble preinstalled. **This is the recommended way to run STREAM4D, as ROS and all dependencies are preinstalled in the docker image.** Follow sections 1 through 3 to install Docker on your computer, pull the image, and download simulation files. The user home directory, `/home/$USER`, is mounted as a volume in the Docker image, allowing access to the repo from the Docker image if the repo has been cloned within the home directory. We provide optional instructions to install the system on a base Ubuntu 22.04 system for both [ROS Humble](#optional-installing-ros-humble-system-dependencies-without-docker) and [ROS Noetic](#optional-installing-ros-noetic-system-dependencies-without-docker).
 
 ### 1) Docker Installation (Recommended)
 
@@ -345,7 +345,7 @@ mesh/<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.jpg<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;render.jpg<br>
 
-Build SORT3D-Nav in `ai_module`:
+Build STREAM4D-Nav in `ai_module`:
 
 ```bash
 cd ../../ai_module
@@ -368,7 +368,7 @@ pip install byte_track cython_bbox
 git checkout noetic-wheelchair
 ```
 
-The instructions for building the base system are excerpted from [its original repo](https://github.com/jizhang-cmu/cmu_vla_challenge_unity). Since SORT3D requires Python > 3.9 to work, ROS Noetic cannot be used on its default 20.04, and must be built from source on Ubuntu 22.04. Instructions to build ROS Noetic on Ubuntu 22.04 from source are in [this section](#optional-building-ros-noetic-system-in-base-ubuntu-2204), and ROS Noetic is already prebuilt in the provided Docker image. The base autonomy system requires extra ROS dependencies which we have modified to compile on Ubuntu 22.04, found in `simulator/noetic_ubuntu22_extra_deps`. These dependencies must be built first, then the [workspace overlaid](https://wiki.ros.org/catkin/Tutorials/workspace_overlaying) by sourcing it before building the simulator workspace:
+The instructions for building the base system are excerpted from [its original repo](https://github.com/jizhang-cmu/cmu_vla_challenge_unity). Since STREAM4D requires Python > 3.9 to work, ROS Noetic cannot be used on its default 20.04, and must be built from source on Ubuntu 22.04. Instructions to build ROS Noetic on Ubuntu 22.04 from source are in [this section](#optional-building-ros-noetic-system-in-base-ubuntu-2204), and ROS Noetic is already prebuilt in the provided Docker image. The base autonomy system requires extra ROS dependencies which we have modified to compile on Ubuntu 22.04, found in `simulator/noetic_ubuntu22_extra_deps`. These dependencies must be built first, then the [workspace overlaid](https://wiki.ros.org/catkin/Tutorials/workspace_overlaying) by sourcing it before building the simulator workspace:
 
 ```bash
 source /opt/ros/noetic/setup.bash
@@ -396,7 +396,7 @@ mesh/<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.jpg<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;render.jpg<br>
 
-Build SORT3D-Nav in `ai_module`:
+Build STREAM4D-Nav in `ai_module`:
 ```bash
 cd ../../ai_module
 catkin_make
@@ -446,7 +446,7 @@ mesh/<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.jpg<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;render.jpg<br>
 
-Build SORT3D-Nav in `ai_module`:
+Build STREAM4D-Nav in `ai_module`:
 
 ```bash
 cd ../../ai_module
@@ -464,7 +464,7 @@ pip install byte_track cython_bbox
 
 ### (Optional) Installing ROS Humble System Dependencies without Docker
 
-This section contains instructions to install ROS Humble and SORT3D-Nav system dependencies on a base Ubuntu 22.04 system. Please report any issues to the issue tracker.
+This section contains instructions to install ROS Humble and STREAM4D-Nav system dependencies on a base Ubuntu 22.04 system. Please report any issues to the issue tracker.
 
 1. Begin by installing ros-humble-desktop, following the [ROS wiki page](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html).
 2. Install CUDA Toolkit 12.x following [the instructions on the official website](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/#ubuntu). This system has been tested with CUDA 12.1, but should work with higher CUDA versions.
@@ -474,7 +474,7 @@ This section contains instructions to install ROS Humble and SORT3D-Nav system d
     sudo apt install libusb-dev ros-humble-perception-pcl ros-humble-sensor-msgs-py ros-humble-tf-transformations ros-humble-joy python3-colcon-common-extensions python-is-python3 
     pip install transforms3d pyyaml
     ```
-4. Install the pip dependencies for SORT3D-Nav. Make sure you are in this repo's top level directory:
+4. Install the pip dependencies for STREAM4D-Nav. Make sure you are in this repo's top level directory:
     ```bash
     pip install -r requirements.txt
     ```
@@ -483,7 +483,7 @@ This section contains instructions to install ROS Humble and SORT3D-Nav system d
 
 ### (Optional) Installing ROS Noetic System Dependencies without Docker
 
-This section contains instructions to build ROS Noetic from source and SORT3D-Nav system dependencies on a base Ubuntu 22.04 system. Please report any issues to the issue tracker.
+This section contains instructions to build ROS Noetic from source and STREAM4D-Nav system dependencies on a base Ubuntu 22.04 system. Please report any issues to the issue tracker.
 
 1. As ROS Noetic does not support Ubuntu 22.04, it must be built from source. Follow the instructions in [this Reddit post](https://www.reddit.com/r/ROS/comments/158icpy/compiling_ros1_noetic_from_source_on_ubuntu_2204/), mirrored in [this repository](https://github.com/nzantout/ros-noetic-ubuntu-2204-compile-instructions).
 2. Install CUDA Toolkit 12.x following [the instructions on the official website](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/#ubuntu). This system has been tested with CUDA 12.1, but should work with higher CUDA versions.
@@ -492,24 +492,24 @@ This section contains instructions to build ROS Noetic from source and SORT3D-Na
     sudo apt update
     sudo apt install libusb-dev python-yaml python-is-python3
     ```
-4. Install the pip dependencies for SORT3D-Nav. Make sure you are in this repo's top level directory:
+4. Install the pip dependencies for STREAM4D-Nav. Make sure you are in this repo's top level directory:
     ```bash
     pip install -r requirements.txt
     ```
 5. Follow [Section 3b](#3b-building-ros-noetic-system-with-wheelchair-simulator-ubuntu-2204) to set up the system.
 
 
-## SORT3D-Nav: Usage
+## STREAM4D-Nav: Usage
 
 ### Simulation with Ground Truth Semantics
 
 **The instructions for running the simulated system using ground truth semantics are the same regardless of which branch you are using. Check out the branch you wish to run.**
 
-SORT3D uses [Mistral Large 2](https://mistral.ai/) by default. Create a free research API key, then replace the placeholder in [`scripts/run_full_system_gt_semantics.sh`](scripts/run_full_system_gt_semantics.sh) with your API key:
+STREAM4D uses [Mistral Large 2](https://mistral.ai/) by default. Create a free research API key, then replace the placeholder in [`scripts/run_full_system_gt_semantics.sh`](scripts/run_full_system_gt_semantics.sh) with your API key:
 ```
 export MISTRAL_API_KEY="YOUR API KEY HERE"
 ```
-You may do the same with [`scripts/run_sort3d_navigation_gt_semantics.sh`](scripts/run_sort3d_navigation_gt_semantics.sh) if you want to run SORT3D separately from the base autonomy system. Make sure all the scripts are executable:
+You may do the same with [`scripts/run_stream4d_navigation_gt_semantics.sh`](scripts/run_stream4d_navigation_gt_semantics.sh) if you want to run STREAM4D separately from the base autonomy system. Make sure all the scripts are executable:
 
 ```
 chmod -R +x scripts 
@@ -553,7 +553,7 @@ Create a free research API key for [Mistral Large 2](https://mistral.ai/), then 
 ```bash
 export MISTRAL_API_KEY="YOUR API KEY HERE"
 ```
-You may do the same with [`scripts/run_sort3d_navigation_semantic_mapping.sh`](scripts/run_sort3d_navigation_semantic_mapping.sh) if you want to run SORT3D separately from the base autonomy system. Make sure all the scripts are executable:
+You may do the same with [`scripts/run_stream4d_navigation_semantic_mapping.sh`](scripts/run_stream4d_navigation_semantic_mapping.sh) if you want to run STREAM4D separately from the base autonomy system. Make sure all the scripts are executable:
 
 ```bash
 chmod -R +x scripts 
@@ -595,14 +595,14 @@ https://github.com/user-attachments/assets/2c5efd27-dc2d-46fa-bec8-b674cfed157d
 
 ### ROS Bag
 
-We provide ROS bags of various indoor environments to demonstrate SORT3D-Nav in real environments. [Follow the instructions above to download](#ros-bag-files-for-sort3d-nav) a ROS bag for either the mecanum-wheeled robot or the wheelchair-base robot. Again, make sure you have created a free research API key for [Mistral Large 2](https://mistral.ai/), then replace the placeholder in [`scripts/run_sort3d_navigation_semantic_mapping.sh`](scripts/run_sort3d_navigation_semantic_mapping.sh) with your API key:
+We provide ROS bags of various indoor environments to demonstrate STREAM4D-Nav in real environments. [Follow the instructions above to download](#ros-bag-files-for-stream4d-nav) a ROS bag for either the mecanum-wheeled robot or the wheelchair-base robot. Again, make sure you have created a free research API key for [Mistral Large 2](https://mistral.ai/), then replace the placeholder in [`scripts/run_stream4d_navigation_semantic_mapping.sh`](scripts/run_stream4d_navigation_semantic_mapping.sh) with your API key:
 ```
 export MISTRAL_API_KEY="YOUR API KEY HERE"
 ```
 
-Start by running the script for SORT3D-Nav using semantic mapping (script is the same regardless of which branch you are using):
+Start by running the script for STREAM4D-Nav using semantic mapping (script is the same regardless of which branch you are using):
 ```bash
-scripts/run_sort3d_navigation_semantic_mapping.sh
+scripts/run_stream4d_navigation_semantic_mapping.sh
 ```
 
 Run the Rviz viewer in a second terminal:
