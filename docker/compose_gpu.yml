@@ -5,7 +5,7 @@ services:
     privileged: true
     stdin_open: true
     tty: true
-    working_dir: /home/tetsursonoda/Projects/STREAM4D
+    working_dir: /home/tetsursonoda/Projects/SORT3D
     network_mode: "host"
     ipc: "host"
     # Enabling Nvidia GPUs

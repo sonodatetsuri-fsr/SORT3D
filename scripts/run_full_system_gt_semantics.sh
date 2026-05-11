@@ -16,4 +16,4 @@ sleep 5
 
 cd $SCRIPT_DIR
 cd ../ai_module
-ros2 launch language_planner stream4d_gt_semantics_launch.xml ll_model:=qwen3.6:27b captioner_batch_size:=4 object_query_type:=clip
+ros2 launch language_planner sort3d_gt_semantics_launch.xml ll_model:=qwen3.6:27b captioner_batch_size:=4 object_query_type:=clip

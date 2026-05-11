@@ -7,4 +7,4 @@ source /opt/ros/humble/setup.bash
 cd $SCRIPT_DIR
 cd ../ai_module
 source ./install/setup.bash
-ros2 launch language_planner stream4d_gt_semantics_launch.xml ll_model:=qwen3.6:35b
+ros2 launch language_planner sort3d_gt_semantics_launch.xml ll_model:=qwen3.6:35b
